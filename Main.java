@@ -5,14 +5,17 @@ public class Main {
     static boolean isActive = true;
 
     public static void main(String[] args) {
+        Inventory inventory = new Inventory(1000);
         while (isActive) {
-            startProgram();
+            startProgram(inventory);
         }
     }
 
-    private static void startProgram() {
+    private static void startProgram(Inventory inventory) {
         System.out.println("|| Convinience Store Manager ||");
         System.out.println("-------------------------------");
+        System.out.println("Money: " + inventory.money);
+        System.err.println("");
         System.out.println("1. Make purchase");
         System.out.println("2. Check Inventory");
         System.out.println("3. Open Transaction History");
@@ -28,7 +31,7 @@ public class Main {
                 break;
             case "2": // check inventory
                 createGap();
-                Menu.inventoryMenu();
+                Menu.inventoryMenu(inventory);
                 break;
             case "3": // open transaction history
                 createGap();
