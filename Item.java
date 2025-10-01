@@ -1,10 +1,12 @@
 public class Item {
     String itemName;
     int itemPrice;
+    int quantity;
 
-    public Item(String _itemName, int _itemPrice){
+    public Item(String _itemName, int _itemPrice, int _quantity){
         itemName = _itemName;
         itemPrice = _itemPrice;
+        quantity = _quantity;
     }
 
     public void displayDetails(){

@@ -5,8 +5,8 @@ public class Main {
     static boolean isActive = true;
 
     public static void main(String[] args) {
-        Inventory inventory = new Inventory(1000);
-        while (isActive) {
+        Inventory inventory = new Inventory(1000); // setups the initial money
+        while (isActive) { // will always loop the program unless user selects Exit which terminates the loop
             startProgram(inventory);
         }
     }
