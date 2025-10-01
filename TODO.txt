@@ -18,3 +18,15 @@ sell price. Even better if we can adjust it per item.
 
 Transaction History:
 1. Add transaction history where we buy stock and sell items. Make sure it can be marked as us buying and selling.
+
+INVENTORY 
+=====================
+Name: Apple
+Price: 50
+Quantity: 150
+---------------------
+Name: Cheese
+Price: 80
+Quantity: 100
+=====================
+[commands]
