@@ -51,6 +51,7 @@ public class Menu {
                     System.out.println("");
                     System.out.println("Purchased " + newItem.itemName);
                     System.out.println("Remaining money: " + inventory.money);
+                    System.out.println("");
                     break;
                 case "2":
                     System.out.println("> Exited inventory");
