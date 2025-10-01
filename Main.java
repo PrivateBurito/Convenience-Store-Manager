@@ -26,15 +26,15 @@ public class Main {
 
         switch (choice) {
             case "1": // make purchase
-                createGap();
+                createGap(10);
                 Menu.purchaseMenu();
                 break;
             case "2": // check inventory
-                createGap();
+                createGap(10);
                 Menu.inventoryMenu(inventory);
                 break;
             case "3": // open transaction history
-                createGap();
+                createGap(10);
                 Menu.transactionMenu();
                 break;
             case "4":
@@ -44,8 +44,7 @@ public class Main {
                 break;
         }
     }
-    private static void createGap(){
-        int spaces = 10;
+    private static void createGap(int spaces){
         for (int i = 0; i < spaces; i++) {
             System.out.println("");
         }

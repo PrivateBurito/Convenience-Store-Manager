@@ -6,7 +6,7 @@ Main:
 Inventory System:
 1. (COMPLETE) Add validator. For example: when entering the price of an item, the input must be an int, if not then ask again.
 2. Make something like a counter for items. Right now, items displayed individualy. It must displayed like this if theres multiple of them
-Apple x5, Milk x10. Something like that.
+Apple x5, Milk x10. Something like that. (im thinking of tracking their quantity in the item class itself)
 
 Purchase System:
 1. Add purchase system where it takes from the inventory and subtracts the funds from the item cost.
