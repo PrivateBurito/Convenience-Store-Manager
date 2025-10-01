@@ -19,6 +19,8 @@ sell price. Even better if we can adjust it per item.
 Transaction History:
 1. Add transaction history where we buy stock and sell items. Make sure it can be marked as us buying and selling.
 
+Planned UI:
+
 INVENTORY 
 =====================
 Name: Apple
