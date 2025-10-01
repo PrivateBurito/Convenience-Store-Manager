@@ -68,8 +68,15 @@ public class Menu {
                     String itemName = scanner.nextLine();
                     System.out.print("Price: ");
                     String itemPrice = scanner.nextLine();
+                    int itemQuantity = 1;
                     
                     int itemPriceInt = Integer.parseInt(itemPrice); // converts string to int
+                    /*
+                     * Q: Why bother converting a string to int if you can just take an int input?
+                     * A: There's an issue where it gives a blank input after the first loop
+                     * triggering the default case in the button without the user doing anything. So when
+                     * trying to get an int input from a scanner, just get the string and convert it to int
+                     */
 
                     if (isNotInt(itemPrice)) { // checks if string entered can be int. if true then its not
                         System.out.println("Enter a valid price.");
@@ -83,8 +90,8 @@ public class Menu {
                         System.out.println("Missing P" + missingFunds);
                         break;
                     }
-                    
-                    Item newItem = new Item(itemName, itemPriceInt);
+
+                    Item newItem = new Item(itemName, itemPriceInt, itemQuantity);
 
                     inventory.money -= newItem.itemPrice;
                     inventory.itemsList.add(newItem);
