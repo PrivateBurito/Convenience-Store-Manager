@@ -3,6 +3,18 @@ import java.util.Scanner;
 public class Menu {
     static Scanner scanner = new Scanner(System.in);
 
+    public static boolean isNotInt(String str) {
+        if (str == null || str.trim().isEmpty()) {
+            return true; // if empty, then its not int
+        }
+        try {
+            Integer.parseInt(str);
+            return false; // is int
+        } catch (NumberFormatException e) {
+            return true; // not int
+        }
+    }
+
     public static void purchaseMenu() {
         System.out.println("Select items to be purchased:");
         System.out.println("Complete!");
@@ -43,8 +55,15 @@ public class Menu {
                     String itemName = scanner.nextLine();
                     System.out.print("Price: ");
                     String itemPrice = scanner.nextLine();
+
+                    if (isNotInt(itemPrice)) {
+                        System.out.println("Enter a valid price.");
+                        break;
+                    }
+
                     int itemPriceInt = Integer.parseInt(itemPrice);
                     Item newItem = new Item(itemName, itemPriceInt);
+
                     inventory.money -= newItem.itemPrice;
                     inventory.itemsList.add(newItem);
 
