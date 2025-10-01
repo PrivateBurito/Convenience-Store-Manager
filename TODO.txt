@@ -4,7 +4,7 @@ Main:
 1. 
 
 Inventory System:
-1. Add validator. For example: when entering the price of an item, the input must be an int, if not then ask again.
+1. (COMPLETE) Add validator. For example: when entering the price of an item, the input must be an int, if not then ask again.
 2. Make something like a counter for items. Right now, items displayed individualy. It must displayed like this if theres multiple of them
 Apple x5, Milk x10. Something like that.
 
