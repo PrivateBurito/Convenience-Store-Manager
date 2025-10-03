@@ -141,6 +141,7 @@ public class Menu {
         while (isActive) {
             System.out.println("Transaction history:");
             System.out.println("==================================");
+            // checks if maxIndex is greater than the size of transaction list size
             if (maxIndex > inventory.transactionList.size()) {
                 maxIndex = inventory.transactionList.size();
                 System.out.println("!");
