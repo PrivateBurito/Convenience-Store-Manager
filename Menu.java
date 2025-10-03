@@ -15,7 +15,7 @@ public class Menu {
         }
     }
 
-    private static void createGap(int spaces){
+    private static void createGap(int spaces) {
         for (int i = 0; i < spaces; i++) {
             System.out.println("");
         }
@@ -47,7 +47,8 @@ public class Menu {
                 System.out.println("");
                 System.out.println("");
                 System.out.println("");
-            } else { // lists the items from the item arraylist. terrible implementation, refer to todo #2
+            } else { // lists the items from the item arraylist. terrible implementation, refer to
+                     // todo #2
                 for (int i = 0; i < inventory.itemsList.size(); i++) {
                     Item item = inventory.itemsList.get(i);
                     item.displayDetails();
@@ -69,13 +70,15 @@ public class Menu {
                     System.out.print("Price: ");
                     String itemPrice = scanner.nextLine();
                     int itemQuantity = 1;
-                    
+
                     int itemPriceInt = Integer.parseInt(itemPrice); // converts string to int
                     /*
                      * Q: Why bother converting a string to int if you can just take an int input?
                      * A: There's an issue where it gives a blank input after the first loop
-                     * triggering the default case in the button without the user doing anything. So when
-                     * trying to get an int input from a scanner, just get the string and convert it to int
+                     * triggering the default case in the button without the user doing anything. So
+                     * when
+                     * trying to get an int input from a scanner, just get the string and convert it
+                     * to int
                      */
 
                     if (isNotInt(itemPrice)) { // checks if string entered can be int. if true then its not
@@ -84,7 +87,8 @@ public class Menu {
                     }
                     if (itemPriceInt > inventory.money) { // checks if you have enough money to make the purchase
                         System.out.println("Insufficient funds.");
-                        System.out.println("Entered item price: P" + itemPriceInt + " | Current funds: P" + inventory.money);
+                        System.out.println(
+                                "Entered item price: P" + itemPriceInt + " | Current funds: P" + inventory.money);
 
                         int missingFunds = itemPriceInt - inventory.money;
                         System.out.println("Missing P" + missingFunds);
@@ -97,7 +101,6 @@ public class Menu {
 
                     inventory.money -= newItem.itemPrice;
                     inventory.itemsList.add(newItem);
-                    
 
                     System.out.println("");
                     System.out.println("Purchased " + newItem.itemName);
@@ -108,6 +111,19 @@ public class Menu {
                     System.out.println("> Exited inventory");
                     createGap(10);
                     isActive = false;
+                    break;
+                case "test": // makes 50 items
+                    int testPrice = 2;
+                    int testQuantity = 1;
+                    for (int i = 0; i < 50; i++) {
+                        String testName = "TestItem" + i;
+                        Item testItem = new Item(testName, testPrice, testQuantity);
+                        Transaction testTransaction = new Transaction("Inventory Purchase", testItem);
+                        inventory.transactionList.add(testTransaction);
+
+                        inventory.money -= testItem.itemPrice;
+                        inventory.itemsList.add(testItem);
+                    }
                     break;
                 default:
                     System.out.println("INVENTORY: Something went wrong!");
