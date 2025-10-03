@@ -21,7 +21,7 @@ public class Main {
         System.out.println("3. Open Transaction History");
         System.out.println("4. Exit");
         System.out.println("-------------------------------");
-        System.out.println("Enter command:");
+        System.out.print("Enter command: ");
         String choice = scanner.nextLine();
 
         switch (choice) {

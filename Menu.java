@@ -134,21 +134,57 @@ public class Menu {
     }
 
     public static void transactionMenu(Inventory inventory) {
-        System.out.println("Transaction history:");
-        for (int i = 0; i < inventory.transactionList.size(); i++) {
-            Transaction transaction = inventory.transactionList.get(i);
-            transaction.displayDetails();
+        int page = 1;
+        int index = 0;
+        int maxIndex = index + 5;
+        boolean isActive = true;
+        while (isActive) {
+            System.out.println("Transaction history:");
+            System.out.println("==================================");
+            if (maxIndex > inventory.transactionList.size()) {
+                maxIndex = inventory.transactionList.size();
+                System.out.println("!");
+            }
+            System.out.println("index: " + index + " | maxIndex: " + maxIndex);
+            for (int i = index; i < maxIndex; i++) {
+                Transaction transaction = inventory.transactionList.get(i);
+                transaction.displayDetails();
+                index++;
+            }
+            System.out.println("==================================");
+            System.out.println("Page " + page);
+            System.out.println("1. Previous Page");
+            System.out.println("2. Next Page");
+            System.out.println("3. Exit");
+            System.out.print("Enter Command: ");
+            String choice = scanner.nextLine();
+            /*
+             * BUG: If transaction list is NOT a multiple of 5, when going to page 1
+             * and perform previous page command, program breaks
+             */
+            switch (choice) {
+                case "1": // Previous Page
+                    page--;
+                    if (page <= 0) {
+                        page = 1;
+                        index -= maxIndex;
+                    } else {
+                        index -= 5*2;
+                        maxIndex = maxIndex - 5;
+                    }
+                    break;
+                case "2": // Next Page
+                    page++;
+                    maxIndex = index + 5;
+                    break;
+                case "3": // Exit
+                    isActive = false;
+                    break;
+                default:
+                    System.out.println("Something went wrong!");
+                    break;
+            }
         }
-        // pretend something is happening here
-        System.out.println("Press Enter to continue");
-        String choice = scanner.nextLine();
-        switch (choice) {
-            case "":
-                break;
 
-            default:
-                System.out.println("Something went wrong!");
-                break;
-        }
     }
 }
