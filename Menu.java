@@ -92,9 +92,12 @@ public class Menu {
                     }
 
                     Item newItem = new Item(itemName, itemPriceInt, itemQuantity);
+                    Transaction newTransaction = new Transaction("Inventory Purchase", newItem);
+                    inventory.transactionList.add(newTransaction);
 
                     inventory.money -= newItem.itemPrice;
                     inventory.itemsList.add(newItem);
+                    
 
                     System.out.println("");
                     System.out.println("Purchased " + newItem.itemName);
@@ -114,9 +117,12 @@ public class Menu {
 
     }
 
-    public static void transactionMenu() {
+    public static void transactionMenu(Inventory inventory) {
         System.out.println("Transaction history:");
-        System.out.println("nothing.");
+        for (int i = 0; i < inventory.transactionList.size(); i++) {
+            Transaction transaction = inventory.transactionList.get(i);
+            transaction.displayDetails();
+        }
         // pretend something is happening here
         System.out.println("Press Enter to continue");
         String choice = scanner.nextLine();

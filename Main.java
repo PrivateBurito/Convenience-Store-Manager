@@ -35,7 +35,7 @@ public class Main {
                 break;
             case "3": // open transaction history
                 createGap(10);
-                Menu.transactionMenu();
+                Menu.transactionMenu(inventory);
                 break;
             case "4":
                 isActive = false;
