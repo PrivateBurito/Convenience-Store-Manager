@@ -68,10 +68,10 @@ public class Menu {
                 case "1": // add item to inventory
                     System.out.print("Name: ");
                     String itemName = scanner.nextLine();
-                    System.out.print("Quantity: ");
-                    String itemQuantity = scanner.nextLine();
                     System.out.print("Price: ");
                     String itemPrice = scanner.nextLine();
+                    System.out.print("Quantity: ");
+                    String itemQuantity = scanner.nextLine();
 
                     if (isNotInt(itemPrice) || isNotInt(itemQuantity)) { // checks if string entered can be int. if true
                                                                          // then its not
@@ -100,7 +100,7 @@ public class Menu {
                     }
                     createGap(10);
 
-                    ArrayList<Item> items = inventory.itemsList; 
+                    ArrayList<Item> items = inventory.itemsList;
                     boolean itemExists = false;
                     for (Item item : items) { // checks if item already exists
                         if (itemName.equals(item.itemName)) {
@@ -108,19 +108,27 @@ public class Menu {
                             System.out.println("Added [" + itemQuantity + "] " + itemName + " to the quantity.");
                             item.quantity += itemQuantityInt;
                             itemExists = true;
+
+                            inventory.money -= itemPriceInt;
+
+                            Transaction newTransaction = new Transaction("Inventory Purchase", item, itemPriceInt,
+                                    itemQuantityInt);
+                            inventory.transactionList.add(newTransaction);
                         }
                     }
                     if (!itemExists) { // if its a new item
-                        Item newItem = new Item(itemName, itemPriceInt, itemQuantityInt);
-                        Transaction newTransaction = new Transaction("Inventory Purchase", newItem);
+                        double sellPrice = (itemQuantityInt / itemPriceInt) * 1.5;
+                        Item newItem = new Item(itemName, sellPrice, itemQuantityInt);
+                        Transaction newTransaction = new Transaction("Inventory Purchase", newItem, itemPriceInt,
+                                itemQuantityInt);
                         inventory.transactionList.add(newTransaction);
 
-                        inventory.money -= newItem.itemPrice;
+                        inventory.money -= itemPriceInt;
                         inventory.itemsList.add(newItem);
 
                     }
-                    System.out.println("Purchased [" + itemName + "] for " + itemPrice);
-                    System.out.println("Remaining money: " + inventory.money);
+                    System.out.println("Purchased [" + itemName + "] for P" + itemPrice);
+                    System.out.println("Remaining money: P" + inventory.money);
                     System.out.println("");
                     break;
                 case "2":
@@ -129,17 +137,20 @@ public class Menu {
                     isActive = false;
                     break;
                 case "test": // makes 50 items
-                    int testPrice = 2;
-                    int testQuantity = 1;
-                    for (int i = 0; i < 50; i++) {
-                        String testName = "TestItem" + i;
-                        Item testItem = new Item(testName, testPrice, testQuantity);
-                        Transaction testTransaction = new Transaction("Inventory Purchase", testItem);
-                        inventory.transactionList.add(testTransaction);
 
-                        inventory.money -= testItem.itemPrice;
-                        inventory.itemsList.add(testItem);
-                    }
+                    // for (int i = 0; i < 50; i++) {
+                    //     int testPrice = (int)(Math.random() * ((21 - 10) + 1));
+                    //     int testQuantity = (int) (Math.random() * ((11 - 5) + 1));
+                    //     double testSellPrice = (testQuantity / testPrice) * 1.5;
+                    //     String testName = "TestItem" + i;
+                    //     Item testItem = new Item(testName, testSellPrice, testQuantity);
+                    //     Transaction testTransaction = new Transaction("Inventory Purchase", testItem, testPrice,
+                    //             testQuantity);
+                    //     inventory.transactionList.add(testTransaction);
+
+                    //     inventory.money -= testItem.itemPrice;
+                    //     inventory.itemsList.add(testItem);
+                    // }
                     break;
                 default:
                     System.out.println("INVENTORY: Something went wrong!");
