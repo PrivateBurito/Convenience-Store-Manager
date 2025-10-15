@@ -12,5 +12,6 @@ public class Item {
     public void displayDetails(){
         System.out.println("Name: " + itemName);
         System.out.println("Price: " + itemPrice);
+        System.out.println("Quantity: " + quantity);
     }
 }

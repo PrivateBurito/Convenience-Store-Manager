@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Menu {
@@ -67,11 +68,19 @@ public class Menu {
                 case "1": // add item to inventory
                     System.out.print("Name: ");
                     String itemName = scanner.nextLine();
+                    System.out.print("Quantity: ");
+                    String itemQuantity = scanner.nextLine();
                     System.out.print("Price: ");
                     String itemPrice = scanner.nextLine();
-                    int itemQuantity = 1;
+
+                    if (isNotInt(itemPrice) || isNotInt(itemQuantity)) { // checks if string entered can be int. if true
+                                                                         // then its not
+                        System.out.println("Enter a valid price.");
+                        break;
+                    }
 
                     int itemPriceInt = Integer.parseInt(itemPrice); // converts string to int
+                    int itemQuantityInt = Integer.parseInt(itemQuantity);
                     /*
                      * Q: Why bother converting a string to int if you can just take an int input?
                      * A: There's an issue where it gives a blank input after the first loop
@@ -80,11 +89,6 @@ public class Menu {
                      * trying to get an int input from a scanner, just get the string and convert it
                      * to int
                      */
-
-                    if (isNotInt(itemPrice)) { // checks if string entered can be int. if true then its not
-                        System.out.println("Enter a valid price.");
-                        break;
-                    }
                     if (itemPriceInt > inventory.money) { // checks if you have enough money to make the purchase
                         System.out.println("Insufficient funds.");
                         System.out.println(
@@ -94,16 +98,28 @@ public class Menu {
                         System.out.println("Missing P" + missingFunds);
                         break;
                     }
+                    createGap(10);
 
-                    Item newItem = new Item(itemName, itemPriceInt, itemQuantity);
-                    Transaction newTransaction = new Transaction("Inventory Purchase", newItem);
-                    inventory.transactionList.add(newTransaction);
+                    ArrayList<Item> items = inventory.itemsList; 
+                    boolean itemExists = false;
+                    for (Item item : items) { // checks if item already exists
+                        if (itemName.equals(item.itemName)) {
+                            System.out.println("Item already exists.");
+                            System.out.println("Added [" + itemQuantity + "] " + itemName + " to the quantity.");
+                            item.quantity += itemQuantityInt;
+                            itemExists = true;
+                        }
+                    }
+                    if (!itemExists) { // if its a new item
+                        Item newItem = new Item(itemName, itemPriceInt, itemQuantityInt);
+                        Transaction newTransaction = new Transaction("Inventory Purchase", newItem);
+                        inventory.transactionList.add(newTransaction);
 
-                    inventory.money -= newItem.itemPrice;
-                    inventory.itemsList.add(newItem);
+                        inventory.money -= newItem.itemPrice;
+                        inventory.itemsList.add(newItem);
 
-                    System.out.println("");
-                    System.out.println("Purchased " + newItem.itemName);
+                    }
+                    System.out.println("Purchased [" + itemName + "] for " + itemPrice);
                     System.out.println("Remaining money: " + inventory.money);
                     System.out.println("");
                     break;
@@ -170,7 +186,7 @@ public class Menu {
                         page = 1;
                         index -= maxIndex;
                     } else {
-                        index -= 5*2;
+                        index -= 5 * 2;
                         maxIndex = maxIndex - 5;
                     }
                     break;
