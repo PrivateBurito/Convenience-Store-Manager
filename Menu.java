@@ -53,12 +53,14 @@ public class Menu {
                 for (int i = 0; i < inventory.itemsList.size(); i++) {
                     Item item = inventory.itemsList.get(i);
                     item.displayDetails();
+                    System.out.println("");
                 }
             }
 
             System.out.println("=========================");
             System.out.println("1. Add items to inventory");
-            System.out.println("2. Exit");
+            System.out.println("2. Edit Sell Price of Item");
+            System.out.println("3. Exit");
             System.out.println("-------------------------");
             System.out.print("Enter Command: ");
             String choice = scanner.nextLine();
@@ -131,25 +133,55 @@ public class Menu {
                     System.out.println("Remaining money: P" + inventory.money);
                     System.out.println("");
                     break;
-                case "2":
+                case "2": // edit item prices
+                    int maxIndex = inventory.itemsList.size();
+                    System.out.println("Edit Item Prices");
+                    System.out.println("=========================");
+                    if (inventory.itemsList.size() <= 0) {
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                    } else {
+                        for (int i = 0; i < maxIndex; i++) {
+                            Item item = inventory.itemsList.get(i);
+                            System.out.println((i + 1) + ". Name: " + item.itemName);
+                            System.out.println("Price: " + item.itemPrice);
+                        }
+                    }
+                    System.out.println((maxIndex + 1) + ". Exit");
+                    System.out.println("=========================");
+
+                    System.out.println("Enter Command: ");
+                    String editChoice = scanner.nextLine();
+                    int editChoiceInt = (Integer.parseInt(editChoice) - 1);
+                    if (editChoiceInt > maxIndex || editChoiceInt < 0) {
+                        System.out.println("> Exit");
+                        break;
+                    } else {
+                        System.out.println("> Editing...");
+                        editItemPrice(inventory, editChoiceInt);
+                        break;
+                    }
+                case "3":
                     System.out.println("> Exited inventory");
                     createGap(10);
                     isActive = false;
                     break;
-                case "test": // makes 50 items
+                case "test": // idk how to fix this
 
                     // for (int i = 0; i < 50; i++) {
-                    //     int testPrice = (int)(Math.random() * ((21 - 10) + 1));
-                    //     int testQuantity = (int) (Math.random() * ((11 - 5) + 1));
-                    //     double testSellPrice = (testQuantity / testPrice) * 1.5;
-                    //     String testName = "TestItem" + i;
-                    //     Item testItem = new Item(testName, testSellPrice, testQuantity);
-                    //     Transaction testTransaction = new Transaction("Inventory Purchase", testItem, testPrice,
-                    //             testQuantity);
-                    //     inventory.transactionList.add(testTransaction);
+                    // int testPrice = (int)(Math.random() * ((21 - 10) + 1));
+                    // int testQuantity = (int) (Math.random() * ((11 - 5) + 1));
+                    // double testSellPrice = (testQuantity / testPrice) * 1.5;
+                    // String testName = "TestItem" + i;
+                    // Item testItem = new Item(testName, testSellPrice, testQuantity);
+                    // Transaction testTransaction = new Transaction("Inventory Purchase", testItem,
+                    // testPrice,
+                    // testQuantity);
+                    // inventory.transactionList.add(testTransaction);
 
-                    //     inventory.money -= testItem.itemPrice;
-                    //     inventory.itemsList.add(testItem);
+                    // inventory.money -= testItem.itemPrice;
+                    // inventory.itemsList.add(testItem);
                     // }
                     break;
                 default:
@@ -215,4 +247,33 @@ public class Menu {
         }
 
     }
+
+    public static void editItemPrice(Inventory inventory, int index) {
+        Item item = inventory.itemsList.get(index);
+        System.out.println("Edit Item Price");
+        System.out.println("=========================");
+        System.out.println("Name: " + item.itemName);
+        System.out.println("Current Price: " + item.itemPrice);
+        System.out.println("=========================");
+        System.out.print("\nEnter new item price: ");
+        String choice = scanner.nextLine();
+        double newPrice = Integer.parseInt(choice);
+
+        if (isNotInt(choice)) {
+            System.out.println("Enter valid price.");
+            return;
+        }
+        item.itemPrice = newPrice;
+
+        createGap(10);
+        System.out.println("Edit Item Price");
+        System.out.println("=========================");
+        System.out.println("Name: " + item.itemName);
+        System.out.println("Current Price: " + item.itemPrice);
+        System.out.println("=========================");
+        System.out.println("> Updated the price of [" + item.itemName + "] to P" + newPrice);
+        System.out.println("Press Enter to continue...");
+        scanner.nextLine();
+    }
+
 }
