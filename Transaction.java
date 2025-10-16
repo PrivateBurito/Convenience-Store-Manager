@@ -8,7 +8,7 @@ public class Transaction {
     int newQuantity;
     String dateCreated;
 
-    public Transaction(String _transactionType, Item _item, int _buyingPrice, int _newQuantity) {
+    public Transaction(String _transactionType, Item _item, double _buyingPrice, int _newQuantity) {
         transactionType = _transactionType;
         buyingPrice = _buyingPrice;
         newQuantity = _newQuantity;

@@ -27,7 +27,7 @@ public class Main {
         switch (choice) {
             case "1": // make purchase
                 createGap(10);
-                Menu.purchaseMenu();
+                Menu.purchaseMenu(inventory);
                 break;
             case "2": // check inventory
                 createGap(10);

@@ -22,19 +22,31 @@ public class Menu {
         }
     }
 
-    public static void purchaseMenu() {
-        System.out.println("Select items to be purchased:");
-        System.out.println("Complete!");
-        // pretend something is happening here
-        System.out.println("Press Enter to continue");
-        String choice = scanner.nextLine();
-        switch (choice) {
-            case "":
-                break;
-
-            default:
-                break;
+    public static void purchaseMenu(Inventory inventory) {
+        int maxIndex = inventory.itemsList.size();
+        System.out.println("Buy item");
+        System.out.println("=========================");
+        if (inventory.itemsList.size() <= 0) {
+            System.out.println("");
+            System.out.println("");
+            System.out.println("");
+        } else {
+            for (int i = 0; i < maxIndex; i++) {
+                Item item = inventory.itemsList.get(i);
+                System.out.println((i + 1) + ". Name: " + item.itemName);
+                System.out.println("Price: " + item.itemPrice);
+            }
         }
+        System.out.println((maxIndex + 1) + ". Exit");
+        System.out.println("=========================");
+
+        System.out.println("Enter Command: ");
+        String sellChoice = scanner.nextLine();
+        int sellChoiceInt = (Integer.parseInt(sellChoice) - 1);
+        inventory.sellItem(inventory, sellChoiceInt);
+
+        System.out.println("Press Enter to continue");
+        scanner.nextLine();
     }
 
     public static void inventoryMenu(Inventory inventory) {

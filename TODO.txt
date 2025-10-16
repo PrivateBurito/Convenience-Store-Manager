@@ -13,8 +13,8 @@ Apple x5, Milk x10. Something like that. (im thinking of tracking their quantity
 3. (COMPLETE) Add feature to change the selling price of an item
 
 Purchase System:
-1. Add purchase system where it takes from the inventory and subtracts the funds from the item cost.
-2. Currently the pricing doesn't make sense. We buy apples for 50 and we sell them for 50. Make a system that adjusts the 
+1. (COMPLETE) Add purchase system where it takes from the inventory and subtracts the funds from the item cost.
+2. (COMPLETE) Currently the pricing doesn't make sense. We buy apples for 50 and we sell them for 50. Make a system that adjusts the 
 sell price. Even better if we can adjust it per item.
 
 Transaction History:
