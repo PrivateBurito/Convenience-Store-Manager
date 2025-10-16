@@ -181,20 +181,20 @@ public class Menu {
                     break;
                 case "test": // idk how to fix this
 
-                    // for (int i = 0; i < 50; i++) {
-                    // int testPrice = (int)(Math.random() * ((21 - 10) + 1));
-                    // int testQuantity = (int) (Math.random() * ((11 - 5) + 1));
-                    // double testSellPrice = (testQuantity / testPrice) * 1.5;
-                    // String testName = "TestItem" + i;
-                    // Item testItem = new Item(testName, testSellPrice, testQuantity);
-                    // Transaction testTransaction = new Transaction("Inventory Purchase", testItem,
-                    // testPrice,
-                    // testQuantity);
-                    // inventory.transactionList.add(testTransaction);
+                    for (int i = 0; i < 50; i++) {
+                        int testPrice = 10;
+                        int testQuantity = 50;
+                        double testSellPrice = (testQuantity / testPrice) * 1.5;
+                        String testName = "TestItem" + i;
+                        Item testItem = new Item(testName, testSellPrice, testQuantity);
+                        Transaction testTransaction = new Transaction("Inventory Purchase", testItem,
+                                testPrice,
+                                testQuantity);
+                        inventory.transactionList.add(testTransaction);
 
-                    // inventory.money -= testItem.itemPrice;
-                    // inventory.itemsList.add(testItem);
-                    // }
+                        inventory.money -= testItem.itemPrice;
+                        inventory.itemsList.add(testItem);
+                    }
                     break;
                 default:
                     System.out.println("INVENTORY: Something went wrong!");
@@ -206,58 +206,36 @@ public class Menu {
 
     public static void transactionMenu(Inventory inventory) {
         int page = 1;
-        int index = 0;
-        int maxIndex = index + 5;
-        boolean isActive = true;
-        while (isActive) {
-            System.out.println("Transaction history:");
-            System.out.println("==================================");
-            // checks if maxIndex is greater than the size of transaction list size
-            if (maxIndex > inventory.transactionList.size()) {
-                maxIndex = inventory.transactionList.size();
-                System.out.println("!");
+        int itemsBeDisplayed = 5;
+        while (true) {
+            int minumumDisplayed = 0;
+            int maxDisplayed = 5;
+            for (int i = 1; i < page; i++) {
+                minumumDisplayed += itemsBeDisplayed;
+                maxDisplayed += itemsBeDisplayed;
             }
-            System.out.println("index: " + index + " | maxIndex: " + maxIndex);
-            for (int i = index; i < maxIndex; i++) {
-                Transaction transaction = inventory.transactionList.get(i);
-                transaction.displayDetails();
-                index++;
-            }
-            System.out.println("==================================");
-            System.out.println("Page " + page);
+            displayPage(displayType.Transaction, inventory, page, minumumDisplayed, maxDisplayed);
+            System.out.println("min: " + minumumDisplayed + " | max: " + maxDisplayed);
             System.out.println("1. Previous Page");
             System.out.println("2. Next Page");
-            System.out.println("3. Exit");
             System.out.print("Enter Command: ");
             String choice = scanner.nextLine();
-            /*
-             * BUG: If transaction list is NOT a multiple of 5, when going to page 1
-             * and perform previous page command, program breaks
-             */
             switch (choice) {
                 case "1": // Previous Page
                     page--;
                     if (page <= 0) {
                         page = 1;
-                        index -= maxIndex;
-                    } else {
-                        index -= 5 * 2;
-                        maxIndex = maxIndex - 5;
                     }
                     break;
                 case "2": // Next Page
                     page++;
-                    maxIndex = index + 5;
-                    break;
-                case "3": // Exit
-                    isActive = false;
                     break;
                 default:
                     System.out.println("Something went wrong!");
                     break;
+
             }
         }
-
     }
 
     public static void editItemPrice(Inventory inventory, int index) {
@@ -288,4 +266,38 @@ public class Menu {
         scanner.nextLine();
     }
 
+    public enum displayType {
+        Transaction, Item
+    }
+
+    public static void displayPage(displayType type, Inventory inventory, int page, int minumumDisplayed,
+            int maxDisplayed) {
+
+        System.out.println(type + ":");
+        System.out.println("==================================");
+        if (type == displayType.Transaction) {
+            // checks if maxIndex is greater than the size of transaction list size
+            if (maxDisplayed > inventory.transactionList.size()) {
+                maxDisplayed = inventory.transactionList.size();
+            }
+            for (int i = minumumDisplayed; i < maxDisplayed; i++) { // display the individual transaction
+                Transaction transaction = inventory.transactionList.get(i);
+                transaction.displayDetails();
+                minumumDisplayed++;
+            }
+        } else if (type == displayType.Item) {
+            // checks if maxIndex is greater than the size of transaction list size
+            if (maxDisplayed > inventory.itemsList.size()) {
+                maxDisplayed = inventory.itemsList.size();
+            }
+            for (int i = minumumDisplayed; i < maxDisplayed; i++) { // display the individual transaction
+                Item item = inventory.itemsList.get(i);
+                item.displayDetails();
+                minumumDisplayed++;
+            }
+        }
+
+        System.out.println("==================================");
+        System.out.println("Page " + page);
+    }
 }

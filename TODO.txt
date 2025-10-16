@@ -16,10 +16,13 @@ Purchase System:
 1. (COMPLETE) Add purchase system where it takes from the inventory and subtracts the funds from the item cost.
 2. (COMPLETE) Currently the pricing doesn't make sense. We buy apples for 50 and we sell them for 50. Make a system that adjusts the 
 sell price. Even better if we can adjust it per item.
+3. Add a page system where the user can browse through the pages of items.
 
 Transaction History:
 1. (COMPLETE) Add transaction history where we buy stock and sell items. Make sure it can be marked as us buying and selling.
 
+Bugs:
+1. When editing an item's price while inventory is empty and you enter the exit command, the program crashes.
 Planned UI:
 
 INVENTORY 
