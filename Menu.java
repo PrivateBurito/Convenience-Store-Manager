@@ -68,13 +68,12 @@ public class Menu {
                 System.out.println((i + 1) + ". " + item.itemName);
             }
 
-            int prevPage = itemsBeDisplayed + 1, nextPage = itemsBeDisplayed + 2, exitOption = itemsBeDisplayed + 3;
+            int prevPage = maxDisplayed + 1, nextPage = maxDisplayed + 2, exitOption = maxDisplayed + 3;
             String preString = String.valueOf(prevPage), nextString = String.valueOf(nextPage),
                     exitString = String.valueOf(exitOption);
             System.out.println(prevPage + ". Previous Page");
             System.out.println(nextPage + ". Next Page");
             System.out.println(exitOption + ". Exit");
-            System.out.println("Min index: " + minDisplayed + " | Max index: " + maxDisplayed);
             System.out.print("Enter Command: ");
             String choice = scanner.nextLine();
             if (choice.equals(preString)) {
@@ -265,7 +264,6 @@ public class Menu {
                 maxDisplayed += itemsBeDisplayed;
             }
             displayPage(displayType.Transaction, inventory, page, minDisplayed, maxDisplayed);
-            System.out.println("min: " + minDisplayed + " | max: " + maxDisplayed);
             System.out.println("1. Previous Page");
             System.out.println("2. Next Page");
             System.out.println("3. Exit");
