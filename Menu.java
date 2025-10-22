@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Menu {
-    static Scanner scanner = new Scanner(System.in);
+    static Scanner scanner = Main.scanner;
 
     public static boolean isNotInt(String str) {
         if (str == null || str.trim().isEmpty()) {
@@ -16,6 +16,28 @@ public class Menu {
         }
     }
 
+    private static Integer tryParseInt(String str) { // converts string to int but returns null if not possible
+        if (str == null || str.trim().isEmpty()) {
+            return null;
+        }
+        try {
+            return Integer.parseInt(str);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    private static Double tryParseDouble(String str) { // converts string to double but returns null if not possible
+        if (str == null || str.trim().isEmpty()) {
+            return null;
+        }
+        try {
+            return Double.parseDouble(str);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
     private static void createGap(int spaces) {
         for (int i = 0; i < spaces; i++) {
             System.out.println("");
@@ -23,30 +45,58 @@ public class Menu {
     }
 
     public static void purchaseMenu(Inventory inventory) {
-        int maxIndex = inventory.itemsList.size();
-        System.out.println("Buy item");
-        System.out.println("=========================");
-        if (inventory.itemsList.size() <= 0) {
-            System.out.println("");
-            System.out.println("");
-            System.out.println("");
-        } else {
-            for (int i = 0; i < maxIndex; i++) {
+        int page = 1;
+        int itemsBeDisplayed = 5;
+        while (true) {
+            int minDisplayed = 0;
+            int maxDisplayed = 5;
+            if (inventory.itemsList.size() <= itemsBeDisplayed) {
+                maxDisplayed = inventory.itemsList.size();
+            }
+            if (inventory.itemsList.size() <= 0) {
+                System.out.println("No items available for purchase.");
+                return;
+            }
+            for (int i = 1; i < page; i++) {
+                minDisplayed += itemsBeDisplayed;
+                maxDisplayed += itemsBeDisplayed;
+            }
+            
+            displayPage(displayType.Item, inventory, page, minDisplayed, maxDisplayed);
+            for (int i = minDisplayed; i < maxDisplayed; i++) {
                 Item item = inventory.itemsList.get(i);
-                System.out.println((i + 1) + ". Name: " + item.itemName);
-                System.out.println("Price: " + item.itemPrice);
+                System.out.println((i + 1) + ". " + item.itemName);
+            }
+
+            int prevPage = itemsBeDisplayed + 1, nextPage = itemsBeDisplayed + 2, exitOption = itemsBeDisplayed + 3;
+            String preString = String.valueOf(prevPage), nextString = String.valueOf(nextPage),
+                    exitString = String.valueOf(exitOption);
+            System.out.println(prevPage + ". Previous Page");
+            System.out.println(nextPage + ". Next Page");
+            System.out.println(exitOption + ". Exit");
+            System.out.println("Min index: " + minDisplayed + " | Max index: " + maxDisplayed);
+            System.out.print("Enter Command: ");
+            String choice = scanner.nextLine();
+            if (choice.equals(preString)) {
+                page--;
+                if (page <= 0) {
+                    page = 1;
+                }
+            } else if (choice.equals(nextString)) {
+                page++;
+            } else if (choice.equals(exitString)) {
+                return;
+            } else {
+                int choiceInt = tryParseInt(choice) - 1;
+                if (choiceInt >= minDisplayed && choiceInt < maxDisplayed) {
+                    inventory.sellItem(inventory, choiceInt);
+                    System.out.println("Press Enter to continue");
+                    scanner.nextLine();
+                } else {
+                    System.out.println("Something went wrong!");
+                }
             }
         }
-        System.out.println((maxIndex + 1) + ". Exit");
-        System.out.println("=========================");
-
-        System.out.println("Enter Command: ");
-        String sellChoice = scanner.nextLine();
-        int sellChoiceInt = (Integer.parseInt(sellChoice) - 1);
-        inventory.sellItem(inventory, sellChoiceInt);
-
-        System.out.println("Press Enter to continue");
-        scanner.nextLine();
     }
 
     public static void inventoryMenu(Inventory inventory) {
@@ -93,8 +143,8 @@ public class Menu {
                         break;
                     }
 
-                    int itemPriceInt = Integer.parseInt(itemPrice); // converts string to int
-                    int itemQuantityInt = Integer.parseInt(itemQuantity);
+                    double itemPriceInt = tryParseDouble(itemPrice);
+                    int itemQuantityInt = tryParseInt(itemQuantity);
                     /*
                      * Q: Why bother converting a string to int if you can just take an int input?
                      * A: There's an issue where it gives a blank input after the first loop
@@ -108,7 +158,7 @@ public class Menu {
                         System.out.println(
                                 "Entered item price: P" + itemPriceInt + " | Current funds: P" + inventory.money);
 
-                        int missingFunds = itemPriceInt - inventory.money;
+                        double missingFunds = itemPriceInt - inventory.money;
                         System.out.println("Missing P" + missingFunds);
                         break;
                     }
@@ -131,7 +181,7 @@ public class Menu {
                         }
                     }
                     if (!itemExists) { // if its a new item
-                        double sellPrice = (itemQuantityInt / itemPriceInt) * 1.5;
+                        double sellPrice = (double) (itemQuantityInt / itemPriceInt) * 1.5;
                         Item newItem = new Item(itemName, sellPrice, itemQuantityInt);
                         Transaction newTransaction = new Transaction("Inventory Purchase", newItem, itemPriceInt,
                                 itemQuantityInt);
@@ -165,7 +215,7 @@ public class Menu {
 
                     System.out.println("Enter Command: ");
                     String editChoice = scanner.nextLine();
-                    int editChoiceInt = (Integer.parseInt(editChoice) - 1);
+                    int editChoiceInt = (tryParseInt(editChoice) - 1);
                     if (editChoiceInt > maxIndex || editChoiceInt < 0) {
                         System.out.println("> Exit");
                         break;
@@ -184,7 +234,7 @@ public class Menu {
                     for (int i = 0; i < 50; i++) {
                         int testPrice = 10;
                         int testQuantity = 50;
-                        double testSellPrice = (testQuantity / testPrice) * 1.5;
+                        double testSellPrice = (double) (testQuantity / testPrice) * 1.5;
                         String testName = "TestItem" + i;
                         Item testItem = new Item(testName, testSellPrice, testQuantity);
                         Transaction testTransaction = new Transaction("Inventory Purchase", testItem,
@@ -208,16 +258,17 @@ public class Menu {
         int page = 1;
         int itemsBeDisplayed = 5;
         while (true) {
-            int minumumDisplayed = 0;
+            int minDisplayed = 0;
             int maxDisplayed = 5;
             for (int i = 1; i < page; i++) {
-                minumumDisplayed += itemsBeDisplayed;
+                minDisplayed += itemsBeDisplayed;
                 maxDisplayed += itemsBeDisplayed;
             }
-            displayPage(displayType.Transaction, inventory, page, minumumDisplayed, maxDisplayed);
-            System.out.println("min: " + minumumDisplayed + " | max: " + maxDisplayed);
+            displayPage(displayType.Transaction, inventory, page, minDisplayed, maxDisplayed);
+            System.out.println("min: " + minDisplayed + " | max: " + maxDisplayed);
             System.out.println("1. Previous Page");
             System.out.println("2. Next Page");
+            System.out.println("3. Exit");
             System.out.print("Enter Command: ");
             String choice = scanner.nextLine();
             switch (choice) {
@@ -230,6 +281,8 @@ public class Menu {
                 case "2": // Next Page
                     page++;
                     break;
+                case "3": // Exit
+                    return;
                 default:
                     System.out.println("Something went wrong!");
                     break;
@@ -246,14 +299,15 @@ public class Menu {
         System.out.println("Current Price: " + item.itemPrice);
         System.out.println("=========================");
         System.out.print("\nEnter new item price: ");
-        String choice = scanner.nextLine();
-        double newPrice = Integer.parseInt(choice);
+        String enteredPrice = scanner.nextLine();
 
-        if (isNotInt(choice)) {
+        if (isNotInt(enteredPrice)) {
             System.out.println("Enter valid price.");
             return;
         }
-        item.itemPrice = newPrice;
+
+        double price = tryParseDouble(enteredPrice);
+        item.itemPrice = price;
 
         createGap(10);
         System.out.println("Edit Item Price");
@@ -261,7 +315,7 @@ public class Menu {
         System.out.println("Name: " + item.itemName);
         System.out.println("Current Price: " + item.itemPrice);
         System.out.println("=========================");
-        System.out.println("> Updated the price of [" + item.itemName + "] to P" + newPrice);
+        System.out.println("> Updated the price of [" + item.itemName + "] to P" + price);
         System.out.println("Press Enter to continue...");
         scanner.nextLine();
     }
@@ -286,13 +340,13 @@ public class Menu {
                 minumumDisplayed++;
             }
         } else if (type == displayType.Item) {
-            // checks if maxIndex is greater than the size of transaction list size
             if (maxDisplayed > inventory.itemsList.size()) {
                 maxDisplayed = inventory.itemsList.size();
             }
-            for (int i = minumumDisplayed; i < maxDisplayed; i++) { // display the individual transaction
+            for (int i = minumumDisplayed; i < maxDisplayed; i++) {
                 Item item = inventory.itemsList.get(i);
                 item.displayDetails();
+                System.out.println("----------------------------------");
                 minumumDisplayed++;
             }
         }
